@@ -4,7 +4,7 @@
 #include<iostream>
 #include<queue>
 
-//선언된 변수들 저장하는 컨테이너
+//선언된 변수들 저장하는 컨테이너입니다.
 map<string, type> var;
 map<string, type>::iterator it;
 
