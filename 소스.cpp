@@ -3,12 +3,14 @@
 #include"variable.h"
 #include<iostream>
 #include<queue>
+#include<vector>
 
-//선언된 변수들 저장하는 컨테이너입니다.
+//선언된 변수들 저장하는 컨테이너
 map<string, type> var;
 map<string, type>::iterator it;
 
-
+//커맨드 저장 동적 컨테이너
+vector<string> command;
 
 //main 함수는 레벨 0, 중괄호 안으로 들어갈 수록 +1
 int level = 0;
@@ -17,40 +19,44 @@ int level = 0;
 int pointer = 1;
 
 int main(){
-	char command[120];
-	while (gets(command)){
-		if (command[strlen(command) - 1] != ';'){
+	char buf[120];
+	string cmd;
+	while (gets(buf)){
+		command.push_back(buf);
+		cmd = command.back();
+		if (cmd.back() != ';'){
 			puts("세미콜론(;)으로 끝나지 않습니다!");
+			command.pop_back();
 			continue;
 		}
 		//커맨드를 쉼표 단위로 나누어 큐에 저장
 		queue<string> qCmd;
 
 		string token;
-		for (int here = 0; command[here]; here++){
+		for (int here = 0; here < cmd.length(); here++){
 			//연산자면 토큰읂 끊고 연산자도 큐에 넣는다
-			if (command[here] == '=' || command[here] == '+'){
+			if (cmd[here] == '=' || cmd[here] == '+'){
 				qCmd.push(token);
 				token.clear();
-				
+
 				token += command[here];
 				qCmd.push(token);
 				token.clear();
 			}
 			//띄어쓰기면 그냥 넘어간다
-			else if (command[here] == ' '){
+			else if (cmd[here] == ' '){
 				if (token != "") qCmd.push(token);
 				token.clear();
 				continue;
 			}
 			//쉼표나 세미콜론이면 토큰을 끊는다
-			else if (command[here] == ',' || command[here] == ';'){
+			else if (cmd[here] == ',' || cmd[here] == ';'){
 				qCmd.push(token);
 				token.clear();
 			}
 			//나머지는 토큰에 이어붙인다
 			else{
-				token += command[here];
+				token += cmd[here];
 			}
 		}
 		token.clear();
@@ -94,8 +100,8 @@ int main(){
 			}
 			qCmd.pop();
 		}
-		
-		
+
+
 
 		//한 줄 처리가 끝나면 현재의 상황을 출력
 		puts("//-----------------//");
