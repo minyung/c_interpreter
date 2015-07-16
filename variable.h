@@ -1,10 +1,14 @@
 #include<map>
-#include<string>
+#include<iostream>
+
+#pragma once
+
 using namespace std;
 
 #define type_INT		1
 #define type_CHAR		2
 #define type_DOUBLE		3
+
 
 struct type{
 	int datatype;
@@ -37,5 +41,9 @@ struct type{
 		pnt = p;
 	}
 };
-char datatype[3][12] = { "int", "char", "double" };
 
+
+
+
+
+void PrintState(map<string, type> &var);
