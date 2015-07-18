@@ -1,18 +1,29 @@
 #include"GetCommands.h"
+#include"operators.h"
 
 vector<string> CreateToken(string TMPcmd){
 	vector<string> vToken;
 	string token;
 	for (int here = 0; here < TMPcmd.length(); here++){
-		//연산자면 토큰읂 끊고 연산자도 큐에 넣는다
-		if (TMPcmd[here] == '=' || TMPcmd[here] == '+'){
+		//연산자면 토큰을 끊고 연산자도 큐에 넣는다
+		/* ===============================
+			연산자 토큰 분리 - 2015.07.18 심민영 start
+		   ===============================*/
+		string sOper;
+		if (isOper(TMPcmd, &here, &sOper)){
 			vToken.push_back(token);
 			token.clear();
 
-			token += TMPcmd[here];
+	//		cout << sOper << endl;
+
+			token += sOper;
 			vToken.push_back(token);
 			token.clear();
+
 		}
+		/* ===============================
+		     연산자 토큰 분리 - 2015.07.18 심민영 end
+		   ===============================*/
 		//띄어쓰기면 그냥 넘어간다
 		else if (TMPcmd[here] == ' '){
 			if (token != "") vToken.push_back(token);
@@ -54,12 +65,23 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 	//나누어진 토큰의 첫 부분(if, int, while 등)에 따라 호출되는 함수가 다르게끔 설정
 	for (int i = 0; i < vToken.size(); i++){
 		token = vToken[i];
+
+		cout << token << endl;
+
 		//토큰의 첫 부분이 변수의 자료형이면 뒷 부분은 반드시 변수의 이름이 나온다
 		/*변수 타입 구분
 		1 == int
 		2 == char
 		3 == double
 		*/
+		/* ===============================
+			연산자 토큰 처리 - 2015.07.18 심민영 start
+		   ===============================*/
+		int prec = PrecOper().GetPrecedence(token);
+		/* ===============================
+			연산자 토큰 처리 - 2015.07.18 심민영 end
+		   ===============================*/
+
 		if (token == "int"){
 			oldtoken = token;
 		}
@@ -73,6 +95,16 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 		}
 		else if (token == "for"){
 		}
+		/* ===============================
+			연산자 토큰 처리 - 2015.07.18 심민영 start
+		   ===============================*/
+		else if (prec != -1){
+			cout << token << " " << prec << endl;
+			PrecOper().infix_to_postfix(vToken, &i, var);
+		}
+		/* ===============================
+			연산자 토큰 처리 - 2015.07.18 심민영 end
+		   ===============================*/
 		// 토큰이 변수 선언, if, for, while, 연산도 아니면 변수 이름인 것이다
 		else{
 			if (oldtoken == "int"){
@@ -89,7 +121,7 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			}
 		}
 	}
-	
+
 	if (TMPcmd.back() == '{') level++;
 	else if (TMPcmd.back() == '}') level--;
 
