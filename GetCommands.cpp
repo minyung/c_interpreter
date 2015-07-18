@@ -1,21 +1,8 @@
 #include"GetCommands.h"
 
-COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<COMMAND> &command){
-	COMMAND ret;
-	char buf[120];
-	string TMPcmd;
-	gets(buf);
-	TMPcmd = buf;
-	if (TMPcmd.back() != ';'){
-		puts("세미콜론(;)으로 끝나지 않습니다!");
-		ret.level = -1;
-		return ret;
-	}
-
-	//커맨드를 쉼표 단위로 나누어 벡터에 저장
+vector<string> CreateToken(string TMPcmd){
 	vector<string> vToken;
 	string token;
-
 	for (int here = 0; here < TMPcmd.length(); here++){
 		//연산자면 토큰읂 끊고 연산자도 큐에 넣는다
 		if (TMPcmd[here] == '=' || TMPcmd[here] == '+'){
@@ -42,10 +29,28 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			token += TMPcmd[here];
 		}
 	}
+	return vToken;
+}
+
+COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<COMMAND> &command){
+	COMMAND ret;
+	char buf[120];
+	string TMPcmd;
+	gets(buf);
+	TMPcmd = buf;
+	if (TMPcmd.back() != ';'){
+		puts("세미콜론(;)으로 끝나지 않습니다!");
+		ret.level = -1;
+		return ret;
+	}
+
+	//커맨드를 쉼표 단위로 나누어 벡터에 저장
+	vector<string> vToken;
+
+	vToken = CreateToken(TMPcmd);
 
 
-	token.clear();
-	string oldtoken;
+	string token, oldtoken;
 	//나누어진 토큰의 첫 부분(if, int, while 등)에 따라 호출되는 함수가 다르게끔 설정
 	for (int i = 0; i < vToken.size(); i++){
 		token = vToken[i];
