@@ -40,6 +40,33 @@ struct type{
 		level = lev;
 		pnt = p;
 	}
+	double getValue(){
+		if (datatype == 1){
+			return u.value_int;
+		}
+		//char
+		else if (datatype == 2){
+			return u.value_char;
+		}
+		//double
+		else if (datatype == 3){
+			return u.value_double;
+		}
+	}
+	void setValue(double num){
+		//int
+		if (datatype == 1){
+			u.value_int = (int)num;
+		}
+		//char
+		else if (datatype == 2){
+			u.value_char = (char)num;
+		}
+		//double
+		else if (datatype == 3){
+			u.value_double = (double)num;
+		}
+	}
 };
 
 

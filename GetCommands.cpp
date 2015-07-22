@@ -11,15 +11,15 @@ vector<string> CreateToken(string TMPcmd){
 		   ===============================*/
 		string sOper;
 		if (isOper(TMPcmd, &here, &sOper)){
-			vToken.push_back(token);
-			token.clear();
-
+			if (token != ""){
+				vToken.push_back(token);
+				token.clear();
+			}
 	//		cout << sOper << endl;
 
 			token += sOper;
 			vToken.push_back(token);
 			token.clear();
-
 		}
 		/* ===============================
 		     연산자 토큰 분리 - 2015.07.18 심민영 end
@@ -33,6 +33,7 @@ vector<string> CreateToken(string TMPcmd){
 		//쉼표나 세미콜론이면 토큰을 끊는다
 		else if (TMPcmd[here] == ',' || TMPcmd[here] == ';'){
 			vToken.push_back(token);
+			vToken.push_back(";");
 			token.clear();
 		}
 		//나머지는 토큰에 이어붙인다
@@ -63,11 +64,13 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 
 	string token, oldtoken;
 	//나누어진 토큰의 첫 부분(if, int, while 등)에 따라 호출되는 함수가 다르게끔 설정
+	
+	for (int i = 0; i < vToken.size(); i++){
+		cout << vToken[i].c_str() << " ";
+	}
 	for (int i = 0; i < vToken.size(); i++){
 		token = vToken[i];
-
-		cout << token << endl;
-
+		
 		//토큰의 첫 부분이 변수의 자료형이면 뒷 부분은 반드시 변수의 이름이 나온다
 		/*변수 타입 구분
 		1 == int
@@ -78,10 +81,13 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			연산자 토큰 처리 - 2015.07.18 심민영 start
 		   ===============================*/
 		int prec = PrecOper().GetPrecedence(token);
+		
+		if (token == ";"){
+			continue;
+		}
 		/* ===============================
-			연산자 토큰 처리 - 2015.07.18 심민영 end
-		   ===============================*/
-
+		연산자 토큰 처리 - 2015.07.18 심민영 end
+		===============================*/
 		if (token == "int"){
 			oldtoken = token;
 		}
@@ -99,7 +105,6 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			연산자 토큰 처리 - 2015.07.18 심민영 start
 		   ===============================*/
 		else if (prec != -1){
-			cout << token << " " << prec << endl;
 			PrecOper().infix_to_postfix(vToken, &i, var);
 		}
 		/* ===============================

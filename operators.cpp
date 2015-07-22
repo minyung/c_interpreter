@@ -1,7 +1,7 @@
 #include "operators.h"
 
 
-string strOper = "()[]~!++--*/%<>=&*^|,";
+string strOper = "()[]~!++--*/%<>=&*^|";
 
 /* 연산자 확인해서 토큰에 넣어주는 부분 start */
 bool isOper(string cmd, int* here, string *sOper){
@@ -15,21 +15,18 @@ bool isOper(string cmd, int* here, string *sOper){
 	}
 
 	// 맞다면 oper 에 넣어준다.
-	oper += cmd[index];	(*here)++;
+	oper += cmd[index];
 
 	ch = cmd[index+1];	//두번째 문자를 ch 에 저장하여준다.
 
 	/* 괄호처리 start */
 	// oper[0] = 괄호일 때 뒤에 괄호가 오면 안댐
-	if ((oper[0] == '(') || (oper[0] == '[')){
-		if ((ch == '(') || (ch == '[')){
-			return true;
-		}
-	}
+	if ((oper == "(") || (oper == "[")){; }
+	else if ((oper == ")") || (oper == "]") || (ch == '(') || (ch == '[')){; }
 	/* 괄호처리 end */
-	else if (strOper.find(ch) == -1){}	// 두번째 문자도 특수문자가 아니라면?
-	else if (('0' <= ch) && (ch <= '9')){}		//뒤에 숫자가 있으면 연산자가 끝났다는 것을 알려줌
-	else if (ch == ' '){}		//뒤에 공백이 있다면 연산자가 끝났다는 것을 알려줌
+	else if (strOper.find(ch) == -1){ ; }	// 두번째 문자도 특수문자가 아니라면?
+	else if (('0' <= ch) && (ch <= '9')){ ; }		//뒤에 숫자가 있으면 연산자가 끝났다는 것을 알려줌
+	else if (ch == ' '){ ; }		//뒤에 공백이 있다면 연산자가 끝났다는 것을 알려줌
 	else{
 		oper += ch;	(*here)++;
 	}
