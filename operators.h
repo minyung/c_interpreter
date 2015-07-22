@@ -151,7 +151,7 @@ public:
 
 		for (int i = 0; i < postfix.size(); i++){
 			
-			if (postfix[i] == "")	continue;
+			if (postfix[i] == "" || postfix[i] == ";")	continue;
 
 			postfix_temp.push_back(postfix[i]);
 			temp_size++;
