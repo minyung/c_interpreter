@@ -16,17 +16,28 @@ int level = 0;
 //각 변수에 주소값을 1부터 차례대로 지정
 int pointer = 1;
 
-
+//라인
+int lin=1;
 
 int main(){
 	COMMAND tmp;
+
+	command.push_back(tmp);
 	while (1){
+
+		cout << lin << " >> ";
 		//사용자가 입력하는 한 라인의 커맨드를 읽어오는 함수
-		tmp = GetCmd(var, level, pointer, command);
+		tmp = GetCmd(var, level, pointer, command,0,0,"normal");
 
 		//사용자가 입력한 커맨드가 정상적인 커맨드면 command에 추가
-		if (tmp.level != -1) command.push_back(tmp);
-		PrintState(var);
+		if (tmp.level != -1)
+		{
+			command.push_back(tmp);
+			command[lin].line = lin;
+			lin++;
+		}
+		printf("level : %d\n", level);
+		//PrintState(var);
 	}
 	return 0;
 }
