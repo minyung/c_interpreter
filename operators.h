@@ -76,7 +76,7 @@ public:
 			
 		st.push(infix[index]);
 		for (int i = index + 1; i < infix.size(); i++){
-		//	printf("%s ", infix[i].c_str());
+			printf("%s ", infix[i].c_str());
 			
 			// 持绰 蔼捞 箭磊扼搁 官肺 postfix俊 免仿
 			if ('0' <= infix[i][0] && infix[i][0] <= '9'){
@@ -187,6 +187,30 @@ public:
 			//'>>' 贸府
 			else if (postfix_temp[temp_size] == ">>"){
 				result = calc_Shr(postfix_temp, &temp_size, var);
+			}
+			//'<' 贸府
+			else if (postfix_temp[temp_size] == "<"){
+				result = calc_isSmall(postfix_temp, &temp_size, var);
+			}
+			//'<=' 贸府
+			else if (postfix_temp[temp_size] == "<="){
+				result = calc_isSmallEqual(postfix_temp, &temp_size, var);
+			}
+			//'>' 贸府
+			else if (postfix_temp[temp_size] == ">"){
+				result = calc_isBig(postfix_temp, &temp_size, var);
+			}
+			//'>=' 贸府
+			else if (postfix_temp[temp_size] == ">="){
+				result = calc_isBigEqual(postfix_temp, &temp_size, var);
+			}
+			//'==' 贸府
+			else if (postfix_temp[temp_size] == "=="){
+				result = calc_isEqualEqual(postfix_temp, &temp_size, var);
+			}
+			//'!=' 贸府
+			else if (postfix_temp[temp_size] == "!="){
+				result = calc_isNotEqual(postfix_temp, &temp_size, var);
 			}
 			else	continue;
 			
