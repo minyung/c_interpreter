@@ -55,23 +55,20 @@ public:
 	int infix_to_postfix(vector<string> infix, int *pIndex, map<string, type> &var){
 		stack<string> st;
 		int index = *pIndex;
-		int varNum = var[infix[index - 1]].pnt;
 
-
-		postfix.push_back(infix[index - 1]);
-
-		// 1. ++ 와 --가 변수 앞에 있는 경우
+		int varNum;
+		// 1. ++ 와 --일 경우
 		if (infix[index] == "(" || infix[index] == "++" || infix[index] == "--"){
-			postfix.pop_back();
+	//		postfix.pop_back();
 		}
-		// 2. 앞 부분이 숫자일 경우
-		else if ('0' <= infix[index - 1][0] && infix[index-1][0] <= '9'){
-//			cout << "[*] " << infix[index-1].c_str() << " : 숫자입니다. " << endl;
-		}
-		// 3. 정의되지 않은 변수 일 경우 return 1;
+		// 2. 정의되지 않은 변수 일 경우 return 1;
 		else if (varNum == 0){
 			cout << "[*] " << infix[index - 1].c_str() << " : 정의되지 않은 변수입니다." << endl;
-			return 1;
+			return 0;
+		}
+		else{
+			varNum = var[infix[index - 1]].pnt;
+			postfix.push_back(infix[index - 1]);
 		}
 			
 		st.push(infix[index]);
