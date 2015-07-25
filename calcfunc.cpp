@@ -52,7 +52,7 @@ int calc_Eqauls(vector<string> &postfix, int *size, map<string, type> &var){
 
 	var[postfix[s-2]].setValue(num2);
 	
-	result = 0;
+	result = 1;
 
 	postfix._Pop_back_n(3);
 
@@ -198,6 +198,115 @@ int calc_Shr(vector<string> &postfix, int *size, map<string, type> &var){
 	}
 	getNumbers(postfix, s, var, &num1, &num2);
 	result = (int)num1 >> (int)num2;
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+//"<" 
+int calc_isSmall(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = num1 < num2;
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+//"<="
+int calc_isSmallEqual(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = num1 <= num2;
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+//">"
+int calc_isBig(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = num1 > num2;
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+
+//">="
+int calc_isBigEqual(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = num1 >= num2;
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+//"=="
+int calc_isEqualEqual(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = (num1 == num2);
+	postfix._Pop_back_n(3);
+
+	sprintf(str, "%lf", result);
+	postfix.push_back(str);
+	*size -= 2;
+
+	return result;
+}
+//"!="
+int calc_isNotEqual(vector<string> &postfix, int *size, map<string, type> &var){
+	double num1, num2;
+	double result = 0;
+	char str[100] = "";
+
+	int s = *size;
+
+	getNumbers(postfix, s, var, &num1, &num2);
+	result = (num1 != num2);
 	postfix._Pop_back_n(3);
 
 	sprintf(str, "%lf", result);
