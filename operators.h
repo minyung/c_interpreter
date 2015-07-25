@@ -63,12 +63,12 @@ public:
 		}else{
 			varNum = var[infix[index - 1]].pnt;
 			postfix.push_back(infix[index - 1]);
-		}
-			
-		// 2. 정의되지 않은 변수 일 경우 return 1;
-		if (varNum == 0){
-			cout << "[*] " << infix[index - 1].c_str() << " : 정의되지 않은 변수입니다." << endl;
-			return 0;
+		
+			// 2. 정의되지 않은 변수 일 경우 return 1;
+			if (varNum == 0){
+				cout << "[*] " << infix[index - 1].c_str() << " : 정의되지 않은 변수입니다." << endl;
+				return 0;
+			}
 		}
 
 		st.push(infix[index]);
