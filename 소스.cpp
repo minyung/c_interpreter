@@ -37,7 +37,7 @@ int main(){
 			lin++;
 		}
 		printf("level : %d\n", level);
-		//PrintState(var);
+		PrintState(var);
 	}
 	return 0;
 }

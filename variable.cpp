@@ -14,3 +14,16 @@ void PrintState(map<string, type> &var){
 			cout << "double " << it->first.c_str() << " = " << it->second.u.value_double << " аж╪р : " << it->second.pnt << endl;
 	}
 }
+
+bool isValidName(string str){
+	if ('0' <= str.front() && str.front() <= '9')
+		return false;
+
+	char check[][8] = { "if", "else", "for", "while",
+		"int", "char", "double" };
+
+	for (int i = 0; i < 7; i++){
+		if (check[i] == str) return false;
+	}
+	return true;
+}

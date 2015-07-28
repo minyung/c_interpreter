@@ -69,8 +69,6 @@ struct type{
 	}
 };
 
-
-
-
-
 void PrintState(map<string, type> &var);
+
+bool isValidName(string str);

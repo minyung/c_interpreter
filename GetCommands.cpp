@@ -76,6 +76,7 @@ vector<string> CreateJojeToken(string TMPcmd){
 }
 
 vector<string> CreateToken(string TMPcmd){
+	
 	vector<string> vToken;
 	string token;
 	for (int here = 0; here < TMPcmd.length(); here++){
@@ -277,14 +278,14 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			// 토큰이 변수 선언, if, for, while, 연산도 아니면 변수 이름인 것이다
 			else{
 				if (oldtoken == "int"){
-					if (var[token].pnt == 0)
+					if (var[token].pnt == 0 && isValidName(token))
 						var[token] = type(1, (int)0, level, pointer++);
 				}
-				else if (oldtoken == "char"){
+				else if (oldtoken == "char" && isValidName(token)){
 					if (var[token].pnt == 0)
 						var[token] = type(2, (char)0, level, pointer++);
 				}
-				else if (oldtoken == "double"){
+				else if (oldtoken == "double" && isValidName(token)){
 					if (var[token].pnt == 0)
 						var[token] = type(3, (double)0, level, pointer++);
 				}
