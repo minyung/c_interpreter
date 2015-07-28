@@ -4,7 +4,7 @@
 #include"calcfunc.h"
 
 using namespace std;
-
+#pragma once
 class Mystack {
 private:
 	stack<string> st;
@@ -133,9 +133,9 @@ public:
 
 		*pIndex += postfix.size();
 
-		calc(var);
+		int calc_result = calc(var);
 
-		return 0;
+		return calc_result;
 	}
 
 

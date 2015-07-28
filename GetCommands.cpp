@@ -1,8 +1,9 @@
 #include"GetCommands.h"
 #include "variable.h"
 #include"operators.h"
-#include "if.h"
+#include "_if.h"
 
+#pragma once
 vector<string> CreateJojeToken(string TMPcmd){
 	vector<string> vToken;
 	string token;
@@ -164,6 +165,9 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 	for (; k <= cou; k++)
 	{
 		vector<string> vToken;
+		if (TMPcmd == "")
+			break;
+
 		if (TMPcmd.find("if") == 0 || (tack[tackNum].fin == false && tackNum>0))
 		{
 			vToken = CreateJojeToken(TMPcmd);
@@ -228,35 +232,37 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 				oldtoken = token;
 			}
 			else if (token == "if" || (tackNum>0 && tack[tackNum].fin == false)){
-				//_if(var,  level,  pointer, command, start, end);
-				if (_if(token) == 1)
+				if (_if(token,var) == 1)
 				{
 					if (tackNum == 1)
 					{
 						GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
 					}
+					level--;
 				}
+
 			}
-			else if (token == "elseif" || (tackNum>0 && tack[tackNum].fin == false)){
-				//_if(var,  level,  pointer, command, start, end);
-				if (_if(token) == 1)
-				{
-					if (tackNum == 1)
-					{
-						GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
-					}
-				}
-			}
-			else if (token == "else" || (tackNum>0 && tack[tackNum].fin == false)){
-				//_if(var,  level,  pointer, command, start, end);
-				if (_if(token) == 1)
-				{
-					if (tackNum == 1)
-					{
-						GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
-					}
-				}
-			}
+
+			//else if (token == "elseif" || (tackNum>0 && tack[tackNum].fin == false)){
+			//	//_if(var,  level,  pointer, command, start, end);
+			//	if (_if(token,var) == 1)
+			//	{
+			//		if (tackNum == 1)
+			//		{
+			//			GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+			//		}
+			//	}
+			//}
+			//else if (token == "else" || (tackNum>0 && tack[tackNum].fin == false)){
+			//	//_if(var,  level,  pointer, command, start, end);
+			//	if (_if(token,var) == 1)
+			//	{
+			//		if (tackNum == 1)
+			//		{
+			//			GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+			//		}
+			//	}
+			//}
 			else if (token == "for"){
 			}
 			/* ===============================
@@ -287,12 +293,12 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			if (end-start > 0)
 				TMPcmd = command[start + i].cmd;
 
-			if (token == "{") level++;
+			if (token == "{" && tackNum == 0) level++;
 			else if (token == "}")
 			{
-				if (level == 0)
+				if (level == 0 && tackNum == 0)
 					printf("괄호가 열리지 않았습니다.\n");
-				else
+				else if (tackNum == 0)
 					level--;
 			}
 		}
