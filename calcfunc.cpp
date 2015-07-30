@@ -341,7 +341,7 @@ int calc_And(vector<string> &postfix, int *size, map<string, type> &var){
 }
 
 //"^"
-int calc_Hat(vector<string> &postfix, int *size, map<string, type> &var){
+int calc_Xor(vector<string> &postfix, int *size, map<string, type> &var){
 	double num1, num2;
 	double result = 0;
 	char str[100] = "";
@@ -641,7 +641,7 @@ int calc_AndEqual(vector<string> &postfix, int *size, map<string, type> &var){
 	return result;
 }
 //"^="
-int calc_HatEqual(vector<string> &postfix, int *size, map<string, type> &var){
+int calc_XorEqual(vector<string> &postfix, int *size, map<string, type> &var){
 	double num1, num2;
 	double result = 0;
 	char str[100] = "";

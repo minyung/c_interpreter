@@ -215,7 +215,7 @@ public:
 			}
 			//'^' 贸府
 			else if (postfix_temp[temp_size] == "^"){
-				result = calc_Hat(postfix_temp, &temp_size, var);
+				result = calc_Xor(postfix_temp, &temp_size, var);
 			}
 			//'|' 贸府
 			else if (postfix_temp[temp_size] == "|"){
@@ -255,7 +255,7 @@ public:
 			}
 			//'^=' 贸府
 			else if (postfix_temp[temp_size] == "^="){
-				result = calc_HatEqual(postfix_temp, &temp_size, var);
+				result = calc_XorEqual(postfix_temp, &temp_size, var);
 			}
 			//'|=' 贸府
 			else if (postfix_temp[temp_size] == "|="){
