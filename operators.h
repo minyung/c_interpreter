@@ -209,6 +209,66 @@ public:
 			else if (postfix_temp[temp_size] == "!="){
 				result = calc_isNotEqual(postfix_temp, &temp_size, var);
 			}
+			//'&' 贸府
+			else if (postfix_temp[temp_size] == "&"){
+				result = calc_And(postfix_temp, &temp_size, var);
+			}
+			//'^' 贸府
+			else if (postfix_temp[temp_size] == "^"){
+				result = calc_Hat(postfix_temp, &temp_size, var);
+			}
+			//'|' 贸府
+			else if (postfix_temp[temp_size] == "|"){
+				result = calc_Or(postfix_temp, &temp_size, var);
+			}
+			//'&&' 贸府
+			else if (postfix_temp[temp_size] == "&&"){
+				result = calc_AndAnd(postfix_temp, &temp_size, var);
+			}
+			//'||' 贸府
+			else if (postfix_temp[temp_size] == "||"){
+				result = calc_OrOr(postfix_temp, &temp_size, var);
+			}
+			//'+=' 贸府
+			else if (postfix_temp[temp_size] == "+="){
+				result = calc_PlusEqual(postfix_temp, &temp_size, var);
+			}
+			//'-=' 贸府
+			else if (postfix_temp[temp_size] == "-="){
+				result = calc_MinusEqual(postfix_temp, &temp_size, var);
+			}
+			//'*=' 贸府
+			else if (postfix_temp[temp_size] == "*="){
+				result = calc_MultipleEqual(postfix_temp, &temp_size, var);
+			}
+			//'/=' 贸府
+			else if (postfix_temp[temp_size] == "/="){
+				result = calc_DivisionEqual(postfix_temp, &temp_size, var);
+			}
+			//'%=' 贸府
+			else if (postfix_temp[temp_size] == "%="){
+				result = calc_PercentEqual(postfix_temp, &temp_size, var);
+			}
+			//'&=' 贸府
+			else if (postfix_temp[temp_size] == "&="){
+				result = calc_AndEqual(postfix_temp, &temp_size, var);
+			}
+			//'^=' 贸府
+			else if (postfix_temp[temp_size] == "^="){
+				result = calc_HatEqual(postfix_temp, &temp_size, var);
+			}
+			//'|=' 贸府
+			else if (postfix_temp[temp_size] == "|="){
+				result = calc_OrEqual(postfix_temp, &temp_size, var);
+			}
+			//'<<=' 贸府
+			else if (postfix_temp[temp_size] == "<<="){
+				result = calc_ShlEqual(postfix_temp, &temp_size, var);
+			}
+			//'>>=' 贸府
+			else if (postfix_temp[temp_size] == ">>="){
+				result = calc_ShrEqual(postfix_temp, &temp_size, var);
+			}
 			else	continue;
 			
 			cout << "result: " << result << endl;
