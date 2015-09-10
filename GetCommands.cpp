@@ -3,6 +3,7 @@
 #include"operators.h"
 #include "_if.h"
 
+
 #pragma once
 vector<string> CreateJojeToken(string TMPcmd){
 	vector<string> vToken;
@@ -107,17 +108,29 @@ vector<string> CreateToken(string TMPcmd){
 		}
 		//쉼표나 세미콜론이면 토큰을 끊는다
 		else if (TMPcmd[here] == ',' || TMPcmd[here] == ';'){
-			vToken.push_back(token);
+			if (token == "")
+			{
+			}
+			else
+				vToken.push_back(token);
 			vToken.push_back(";");
 			token.clear();
 		}
 		else if (TMPcmd[here] == '{'){
-			vToken.push_back(token);
+			if (token == "")
+			{
+			}
+			else
+				vToken.push_back(token);
 			vToken.push_back("{");
 			token.clear();
 		}
 		else if (TMPcmd[here] == '}'){
-			vToken.push_back(token);
+			if (token == "")
+			{
+			}
+			else
+				vToken.push_back(token);
 			vToken.push_back("}");
 			token.clear();
 		}
@@ -134,9 +147,9 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 	char buf[120];
 	string TMPcmd;
 	int cou, k;
-	if (start == 0 && exc.compare("normal")==0)
+	if (start == 0 && exc.compare("normal") == 0)
 	{
-		gets(buf);
+		gets_s(buf);
 		TMPcmd = buf;
 		k = 0;
 		cou = 0;
@@ -158,9 +171,12 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 	//if가 끝난뒤에 일반문장이 나오면  스택 팝
 	if (tack[tackNum].fin == true && TMPcmd.find("else if") != 0 && TMPcmd.find("else") != 0 && exc.compare("normal")==0)
 	{
-		joje tmp;
-		tack[tackNum] = tmp;
-		tackNum--;
+		for (int i = 1; i <= tackNum; i++)
+		{
+			joje tmp;
+			tack[i] = tmp;
+			tackNum = 0;
+		}
 	}
 
 	for (; k <= cou; k++)
@@ -168,33 +184,33 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 		vector<string> vToken;
 		if (TMPcmd == "")
 			break;
-
-		if (TMPcmd.find("if") == 0 || (tack[tackNum].fin == false && tackNum>0))
+		/*
+		if (TMPcmd.find("if") != -1)
 		{
-			vToken = CreateJojeToken(TMPcmd);
+		vToken = CreateJojeToken(TMPcmd);
 		}
-		else if (TMPcmd.find("else if") == 0 || (tack[tackNum].fin == false && tackNum > 0))
+		else if (TMPcmd.find("else if") != -1)
 		{
-			vToken = CreateJojeToken(TMPcmd);
+		vToken = CreateJojeToken(TMPcmd);
 		}
 		else if (TMPcmd.find("else") == 0 || (tack[tackNum].fin == false && tackNum > 0))
 		{
-			vToken = CreateJojeToken(TMPcmd);
+		vToken = CreateJojeToken(TMPcmd);
 		}
 		else
 		{
-			if (TMPcmd.back() != ';' && TMPcmd.back() != '{' && TMPcmd.back() != '}'){
-				puts("세미콜론(;)으로 끝나지 않습니다!");
-				ret.level = -1;
-				return ret;
-			}
-
-			vToken = CreateToken(TMPcmd);
+		if (TMPcmd.back() != ';' && TMPcmd.back() != '{' && TMPcmd.back() != '}'){
+		puts("세미콜론(;)으로 끝나지 않습니다!");
+		ret.level = -1;
+		return ret;
 		}
+
+		*/
 		
+		vToken = CreateToken(TMPcmd);
 
+		
 		//커맨드를 쉼표 단위로 나누어 벡터에 저장
-
 		string token, oldtoken;
 		//나누어진 토큰의 첫 부분(if, int, while 등)에 따라 호출되는 함수가 다르게끔 설정
 
@@ -202,6 +218,9 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			cout << vToken[i].c_str() << " ";
 		}*/
 
+		//else  만 치면 토큰으로 인식되지 않는 문제 해결..
+		if (TMPcmd == "else")
+			vToken.push_back("else");
 		for (int i = 0; i < vToken.size(); i++)
 		{
 			token = vToken[i];
@@ -232,28 +251,67 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			else if (token == "double"){
 				oldtoken = token;
 			}
-			else if (token == "if" || (tackNum>0 && tack[tackNum].fin == false)){
+			//모든 if 처리
+			else if (token == "if" || (tackNum>0 && tack[tackNum].type == "if" && tack[tackNum].fin == false))
+			{
 				if (_if(token,var) == 1)
 				{
-					if (tackNum == 1)
-					{
-						GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
-					}
+					GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
 					level--;
 				}
 
 			}
-
-			//else if (token == "elseif" || (tackNum>0 && tack[tackNum].fin == false)){
-			//	//_if(var,  level,  pointer, command, start, end);
-			//	if (_if(token,var) == 1)
-			//	{
-			//		if (tackNum == 1)
-			//		{
-			//			GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
-			//		}
-			//	}
-			//}
+			//else 와 else if, else if안의 내용 처리
+			else if (token == "else" || token == "elseif" || (tackNum > 0 && tack[tackNum].type == "elif" && tack[tackNum].fin == false))
+			{
+				if (token == "else")
+				{
+					if (vToken.size() > 1 && vToken[i + 1] == "if")
+					{
+						i++;
+						int rt = _elseif(token, var);
+						if (rt == 1)
+						{
+							GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+							level--;
+						}
+						else if (rt == -1)
+							return ret;
+					}
+					else
+					{
+						int rt = _else(token, var);
+						if (rt == 1)
+						{
+							GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+							level--;
+						}
+						else if (rt == -1)
+							return ret;
+					}
+				}
+				else if (token == "elseif" || (tackNum > 0 && tack[tackNum].type == "elif" && tack[tackNum].fin == false))
+				{
+					if (_elseif(token, var) == 1)
+					{
+						GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+						level--;
+					}
+				}
+				
+			}
+			//else if안의 내용처리
+			else if ((tackNum > 0 && tack[tackNum].type == "else" && tack[tackNum].fin == false))
+			{
+				int rt = _else(token, var);
+				if (rt == 1)
+				{
+					GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+					level--;
+				}
+				else if (rt == -1)
+					return ret;
+			}
 			//else if (token == "else" || (tackNum>0 && tack[tackNum].fin == false)){
 			//	//_if(var,  level,  pointer, command, start, end);
 			//	if (_if(token,var) == 1)
@@ -271,6 +329,7 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 				===============================*/
 			else if (prec != -1){
 				PrecOper().infix_to_postfix(vToken, &i, var);
+				i--;
 			}
 			/* ===============================
 				연산자 토큰 처리 - 2015.07.18 심민영 end

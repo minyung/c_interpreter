@@ -5,7 +5,7 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 	COMMAND ret;
 	char buf[120];
 	string TMPcmd;
-	gets(buf);
+	gets_s(buf);
 	TMPcmd = buf;
 	if (TMPcmd.back() != ';'){
 		puts("세미콜론(;)으로 끝나지 않습니다!");
