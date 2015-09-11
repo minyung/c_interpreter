@@ -168,7 +168,7 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 		cou = 0;
 	}
 
-	//if가 끝난뒤에 일반문장이 나오면  스택 팝
+	//if가 끝난뒤에 일반문장이 나오면 모든 스택 제거
 	if (tack[tackNum].fin == true && TMPcmd.find("else if") != 0 && TMPcmd.find("else") != 0 && exc.compare("normal")==0)
 	{
 		for (int i = 1; i <= tackNum; i++)
@@ -312,16 +312,39 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 				else if (rt == -1)
 					return ret;
 			}
-			//else if (token == "else" || (tackNum>0 && tack[tackNum].fin == false)){
-			//	//_if(var,  level,  pointer, command, start, end);
-			//	if (_if(token,var) == 1)
-			//	{
-			//		if (tackNum == 1)
-			//		{
-			//			GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
-			//		}
-			//	}
-			//}
+			//while
+			else if (token == "while" || (tackNum>0 && tack[tackNum].type == "while" && tack[tackNum].fin == false))
+			{
+				while(_while(token, var) == 1)
+				{
+					GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+					while (tack[tackNum].type != "while")
+						pop(1);
+					level--;
+				}
+				if (tack[tackNum].fin == true)
+				{
+					//level--;
+					pop(1);
+				}
+			}
+			//for
+			else if (token == "for" || (tackNum>0 && tack[tackNum].type == "for" && tack[tackNum].fin == false))
+			{
+				while (_for(token, var) == 1)
+				{
+					GetCmd(var, level, pointer, command, start, end, tack[tackNum].object);
+					while (tack[tackNum].type != "for")
+						pop(1);
+					GetCmd(var, level, pointer, command, start, end, tack[tackNum].last);
+					level--;
+				}
+				if (tack[tackNum].fin == true)
+				{
+					//level--;
+					pop(1);
+				}
+			}
 			else if (token == "for"){
 			}
 			/* ===============================
@@ -357,7 +380,8 @@ COMMAND GetCmd(map<string, type> &var, int &level, int &pointer, const vector<CO
 			else if (token == "}")
 			{
 				if (level == 0 && tackNum == 0)
-					printf("괄호가 열리지 않았습니다.\n");
+				{
+				}
 				else if (tackNum == 0)
 					level--;
 			}
